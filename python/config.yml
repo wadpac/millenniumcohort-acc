@@ -1,0 +1,9 @@
+!Config
+hsmmconfig: !HSMMConfig
+  Nmax: 3
+  batch_size: 0
+  column_names: [acceleration]
+  nr_resamples: 20
+  truncate: 720
+name: model1
+data_path: /media/sf_VBox_Shared/London/UCL_data_March/run_2017march21/
