@@ -6,4 +6,4 @@ hsmmconfig: !HSMMConfig
   nr_resamples: 20
   truncate: 720
 name: model1
-data_path: /media/sf_VBox_Shared/London/UCL_data_March/run_2017march21/
+data_path: /media/sf_VBox_Shared/London/london_data_11Mei2017/
