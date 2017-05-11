@@ -5,38 +5,78 @@ class Config:
     yaml_tag = u'!Config'
 
     def __init__(self, data_path, hsmmconfig, name=None):
-        self.name = name
+        self.__name = name
         self.hsmmconfig = hsmmconfig
         self.data_path = data_path
 
-        if self.name is None:
-            self.create_name()
-
-        self.create_data_paths()
-
-    def create_name(self):
-        self.name = 'mod_{}st_{}b_{}r_{}t_{}'.format(self.hsmmconfig.Nmax,
+    @property
+    def name(self):
+        if self.__name is None:
+            return 'mod_{}st_{}b_{}r_{}t_{}'.format(self.hsmmconfig.Nmax,
                                                      self.hsmmconfig.batch_size,
                                                      self.hsmmconfig.nr_resamples,
                                                      self.hsmmconfig.truncate,
-                                                      '_'.join(self.hsmmconfig.column_names))
+                                                     '_'.join(self.hsmmconfig.column_names))
+        else:
+            return self.__name
+
+
+    @property
+    def annotations_path(self):
+        return os.path.join(self.data_path, 'tud.csv')
+
+    @property
+    def wearcodes_path(self):
+        return os.path.join(self.data_path, 'wearcodes.csv')
+
+    @property
+    def accelerometer_5sec_path(self):
+        return os.path.join(self.data_path,
+                                                    'accelerometer_5second/')
+
+    @property
+    def merged_path(self):
+        return os.path.join(self.data_path, 'merged/')
+
+    @property
+    def subset_path(self):
+        return os.path.join(self.data_path, "subsets/")
+
+    @property
+    def results_path(self):
+        return os.path.join(self.data_path, 'results')
+
+    @property
+    def model_path(self):
+        return os.path.join(self.results_path, self.name)
+
+    @property
+    def model_file(self):
+        return  os.path.join(self.model_path, 'model.pkl')
+
+    @property
+    def states_path(self):
+        return os.path.join(self.model_path, 'datawithstates')
+
+    @property
+    def config_file(self):
+        return os.path.join(self.model_path,  'config.py')
+
+    @property
+    def image_path(self):
+        return os.path.join(self.model_path, 'images')
+
+    @property
+    def activities_simplified_path(self):
+        return os.path.join(self.data_path,
+                                                       'TUD_simplified.csv')
+
 
     def create_data_paths(self):
-        self.annotations_path = os.path.join(self.data_path, 'tud.csv')
-        self.wearcodes_path = os.path.join(self.data_path, 'wearcodes.csv')
-        self.accelerometer_5sec_path = os.path.join(self.data_path,
-                                               'accelerometer_5second/')
-        self.merged_path = os.path.join(self.data_path, 'merged/')
-        self.subset_path = os.path.join(self.data_path, "subsets/")
-        self.train_path = self.merged_path
-        self.results_path = os.path.join(self.data_path, 'results')
-        self.model_path = os.path.join(self.results_path, self.name)
-        self.model_file = os.path.join(self.model_path, 'model.pkl')
-        self.states_path = os.path.join(self.model_path, 'datawithstates')
-        self.config_file = os.path.join(self.model_path, 'config.py')
-        self.image_path = os.path.join(self.model_path, 'images')
-        self.activities_simplified_path = os.path.join(self.data_path,
-                                                  'TUD_simplified.csv')
+        """
+        This function creates all the data paths that are defined in the config
+        :return:
+        """
         for pathname in [self.merged_path, self.subset_path, self.results_path, self.model_path,
                          self.states_path, self.image_path]:
             if not os.path.exists(pathname):
@@ -49,6 +89,9 @@ class Config:
             'hsmmconfig': self.hsmmconfig,
             'name': self.name
         }
+
+    def __repr__(self):
+        return str(self.as_dict())
 
 
 def config_constructor(loader, node) :
@@ -65,8 +108,11 @@ yaml.add_constructor('!Config', config_constructor)
 
 class HSMMConfig:
     yaml_tag = u'!HSMMConfig'
-    def __init__(self, column_names=['acceleration'], Nmax=4, nr_resamples=20, truncate=720, batch_size=0):
-        self.column_names = column_names
+    def __init__(self, column_names=None, Nmax=4, nr_resamples=20, truncate=720, batch_size=0):
+        if column_names is None:
+            self.column_names = ['acceleration']
+        else:
+            self.column_names = column_names
         self.Nmax = Nmax
         self.nr_resamples = nr_resamples
         self.batch_size = batch_size
@@ -80,6 +126,9 @@ class HSMMConfig:
             'truncate': self.truncate,
             'batch_size': self.batch_size
         }
+
+    def __repr__(self):
+        return str(self.as_dict())
 
 def hsmmconfig_constructor(loader, node) :
     fields = loader.construct_mapping(node)

@@ -10,6 +10,7 @@ config = create_config('config.yml')
 
 # Read in Wearcodes
 wearcodes = prepacc.load_wearcodes(config.wearcodes_path)
+wearcodes = wearcodes.drop_duplicates()
 
 
 # Process accelerometer files
