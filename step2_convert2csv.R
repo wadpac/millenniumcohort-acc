@@ -115,6 +115,7 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       heuristic$Inacitivtybouts_D30M80perc_E5T100_ENMO[cnt] = length(which(day1$heuristic == 7 )) /12
       heuristic$Duration_validdata[cnt] = length(day1$heuristic) /12
       heuristic$Duration_alldata[cnt] = Duration_alldata
+      cnt = cnt + 1
     }
   }
 }
