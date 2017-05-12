@@ -2,20 +2,20 @@ rm(list=ls())
 graphics.off()
 library(GGIR)
 
-# specify working directory
-# setwd("/media/windows-share/London/")
-
 #==================================================================
 # INPUT NEEDED:
 # specify file number to start and end with, fill in c() if unknown
-f0 = 1 #c() #file to start with if used in serial analyses
-f1 = 10 # c() #file to end with if used in serial analyses (modify accordingly, if infinite then it will process until last file)
+f0 = c() #file to start with if used in serial analyses
+f1 = c() #file to end with if used in serial analyses (modify accordingly, if infinite then it will process until last file)
 mode= c(1,2)    #What part of the analysis needs to be done (options: 1,2,3,4 and 5)
-datadir = "/media/sf_VBox_Shared/London/run_05-10/raw" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
 dayborder = 4
-outputdir = "/media/sf_VBox_Shared/London/run_05-10/" #Name directory where output needs to be stored
 studyname = "RDAfiles"  #name of study, only needed if datadir is a list of filenames
-selectdaysfile = "/media/sf_VBox_Shared/London/run_05-10/wearcodes.csv"
+datadir = "/media/windows-share/London/data_spring2017/output_RDAfiles/raw/" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
+outputdir = "/media/windows-share/London/data_spring2017"
+selectdaysfile = "/media/windows-share/London/wearcodes_2017May2.csv"
+# datadir = "/media/sf_VBox_Shared/London/run_05-10/raw" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
+# outputdir = "/media/sf_VBox_Shared/London/run_05-10/" #Name directory where output needs to be stored
+# selectdaysfile = "/media/sf_VBox_Shared/London/run_05-10/wearcodes.csv"
 
 #=====================================================================================
 # load functions from functions folder (replace by require(GGIR) once package is updated)
