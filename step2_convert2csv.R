@@ -6,7 +6,7 @@ graphics.off()
 # INPUT NEEDED:
 # setwd("D:/sharedfolder/first5") #<= the folder in which there is a folder named output_...
 # setwd("D:/dropbox/Dropbox/Accelerometry/GGIR/development") #<= the folder in which there is a folder named output_...
-path = "/media/windows-share/London/data_spring2017"
+path = "/media/sf_VBox_Shared/London/run_05-10/"
 setwd(path)
 studyname = "RDAfiles"
 exportrawdata = FALSE
@@ -16,10 +16,10 @@ library(GGIR)
 # Define output directories:
 outdir = "accelerometer_5second" # epoch data
 newdir = paste0(path,"/output_",studyname,"/",outdir)
-if (dir.exists(newdir) == FALSE) dir.create(newdir)
+if (file.exists(newdir) == FALSE) dir.create(newdir)
 
 
-ufn = unique(dir(paste0(path,"/output_",studyname,"/raw"))) # Define which files need to beprocessed:
+ufn = unique(dir(paste0(path,"/output_",studyname,"/meta/ms2.out"))) # Define which files need to beprocessed:
 # Alternatively, only use data from files for which there is a corresponding diary:
 # ann = read.csv("D:/dropbox/Dropbox/Accelerometry/GGIR/development/input_cls/data_annotations.csv")
 # ufn = as.character(unique(ann$filename))

@@ -12,7 +12,11 @@ B. .RData files are received by Netherlands eScience Center in encrypted zipped 
 find . -name "*.zip" -type f| xargs -I {} 7z x {}
 ```
 
-C. We put all RData files in one folder
+C. We put all RData files in one folder:
+```bash
+mkdir raw
+find . -name "*.RData" | xargs -I {} mv {} raw
+```
 
 D. We merge the seperate time use diaries files and wearcode files as follows
 ```R
