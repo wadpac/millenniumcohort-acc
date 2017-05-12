@@ -3,22 +3,22 @@ Scripts for processing data collected with the GENEActiv accelerometer from adol
 
 The scripts mainly depend on R package [GGIR](https://github.com/wadpac/GGIR) and produce time series which are stored in csv files. These csv files are then used for further processing.
 
-### Current pipeline:
+## Current pipeline:
 
-A. Centre for Longitudinal Studies generates .RData files with GGIR using step1_applyGGIR.R with argument mode = 1
+### 1 Centre for Longitudinal Studies generates .RData files with GGIR using step1_applyGGIR.R with argument mode = 1
 
-B. .RData files are received by Netherlands eScience Center in encrypted zipped folders. Command to extract them (password not included):
+### 2 .RData files are received by Netherlands eScience Center in encrypted zipped folders. Command to extract them (password not included):
 ```bash
 find . -name "*.zip" -type f| xargs -I {} 7z x {}
 ```
 
-C. We put all RData files in one folder:
+### 3 We put all RData files in one folder:
 ```bash
 mkdir raw
 find . -name "*.RData" | xargs -I {} mv {} raw
 ```
 
-D. We merge the seperate time use diaries files and wearcode files as follows
+### 4 We merge the seperate time use diaries files and wearcode files as follows
 ```R
 # merge time use diary (tud):
 tud = read.csv(paste0(path,"/tud.csv"))
@@ -36,6 +36,8 @@ wc3 = merge(wc,wc2,all=TRUE)
 write.csv(wc3,paste0(path,"/wc3.csv"),row.names = FALSE)
 ```
 
-E. We run step1_applyGGIR.R with mode =c(1,2) to generate basic reports and milestone data
+### 5 We run applyGGIR.R with mode =c(1,2) to generate basic reports and milestone data
 
-F. We run step2_convert2csv.R to generate csv-files with time series of aggregated data to be used for unsupervised segmentation
+### 6 We run convert2csv.R to generate csv-files with time series of aggregated data to be used for unsupervised segmentation
+
+### 7 We run mergewithID.R to merging in the participant identifier from the wearcodes.csv file and to tidy up the variable list
