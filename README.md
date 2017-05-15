@@ -46,7 +46,7 @@ We run applyGGIR.R with mode =c(1,2) and derive from this dayspecific reports as
 
 ### 6 Generate 5 second epoch time series
 
-We run convert2csv.R to generate csv-files with time series of aggregated data to be used for unsupervised segmentation
+We run addheuristic_convert2csv.R to generate csv-files with time series of aggregated data to be used for unsupervised segmentation
 
 ### 7 Merging in participant identifiers
 We run mergewithID.R to merging in the participant identifier from the wearcodes.csv file and to tidy up the variable list
