@@ -7,6 +7,7 @@ from milleniumcohort import create_config
 
 
 config = create_config('config.yml')
+config.create_data_paths()
 
 # Read in Wearcodes
 wearcodes = prepacc.load_wearcodes(config.wearcodes_path)

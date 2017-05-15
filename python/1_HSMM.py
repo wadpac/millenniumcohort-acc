@@ -8,6 +8,7 @@ import pandas as pd
 
 
 config = create_config('config.yml')
+config.create_data_paths()
 
 # ## Load the data
 train_path = config.merged_path
@@ -30,9 +31,10 @@ if config.hsmmconfig.batch_size == 0:
     # ## Train HSMM
 
     #Note that with many iterations, the visualization becomes badly visible
-    model, model_dist = hsmm.train_hsmm(X_list, Nmax=config.hsmmconfig.Nmax,
+    model = hsmm.train_hsmm(X_list, Nmax=config.hsmmconfig.Nmax,
                                         nr_resamples=config.hsmmconfig.nr_resamples,
-                                        trunc=config.hsmmconfig.truncate, visualize=True)
+                                        save_model_path=config.model_path,
+                                        trunc=config.hsmmconfig.truncate, visualize=False, verbose=True)
 
 
     # ## Save the data with the states
@@ -48,7 +50,8 @@ else:
                                 batchsize=config.hsmmconfig.batch_size,
                                 Nmax=config.hsmmconfig.Nmax,
                                 nr_resamples=config.hsmmconfig.nr_resamples,
-                                trunc=config.hsmmconfig.truncate, visualize=True)
+                                save_model_path=config.model_path,
+                                trunc=config.hsmmconfig.truncate, visualize=False, verbose=True)
     for filename in filenames:
         dat = pd.read_csv(filename)
         X = dat[config.hsmmconfig.column_names].as_matrix()
