@@ -1,0 +1,8 @@
+!Config
+hsmmconfig: !HSMMConfig
+  Nmax: 4
+  batch_size: 1
+  column_names: [acceleration]
+  nr_resamples: 2
+  truncate: 720
+data_path: /media/sf_VBox_Shared/London/run_05-11/
