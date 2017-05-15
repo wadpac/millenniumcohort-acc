@@ -1,7 +1,7 @@
 !Config
 hsmmconfig: !HSMMConfig
-  Nmax: 3
-  batch_size: 0
+  Nmax: 4
+  batch_size: 1
   column_names: [acceleration]
   nr_resamples: 2
   truncate: 720
