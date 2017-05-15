@@ -45,13 +45,15 @@ ds_wearcodes$filename = as.character(ds_wearcodes$filename)
 ds_wearcodes = merge(ds_wearcodes,heuristic,by.x="filename",by.y="RDFile",all = FALSE)
 # ommit some irrelevant variables
 ds_wearcodes = ds_wearcodes[,-which(colnames(ds_wearcodes) %in% c("id","bodylocation","filename","measurmentday") == TRUE)]
-ds_wearcodes = ds_wearcodes[,-(27:32)]
+ds_wearcodes = ds_wearcodes[,-(21:32)]
+
 # re-order to have accSmall in the front
 ds_wearcodes = moveID2front(ds_wearcodes)
 ds_wearcodes = removecolwithna(ds_wearcodes)
-# if (length(cut) > 0) ds_wearcodes = ds_wearcodes[,-cut]
+# remove binFile.y column and rename binFile.x to binFile
+ds_wearcodes = ds_wearcodes[,-21]
+colnames(ds_wearcodes)[which(colnames(ds_wearcodes) == "binFile.x")] = "binFile"
 write.csv(ds_wearcodes,paste0(path,"/output_RDAfiles/results/mcs_mc_accvars_perday.csv"),row.names = FALSE)
-
 
 #============================================================================
 # merge accSmallID from wearcodes file with part2_windowsummary file (per 10 minutes)
@@ -65,7 +67,7 @@ ws$binFile = sapply(as.character(ws$filename),extractbinname)
 ws_wearcodes = merge(wearcodes,ws,by="binFile",all = TRUE)
 # ommit some irrelevant variables
 ws_wearcodes = ws_wearcodes[,-which(colnames(ws_wearcodes) %in% c("id","bodylocation","filename","measurmentday") == TRUE)]
-ds_wearcodes = ds_wearcodes[,-c(17:23)]
+ws_wearcodes = ws_wearcodes[,-c(17:23)]
 # re-order to have accSmall in the front
 ws_wearcodes = moveID2front(ws_wearcodes)
 ws_wearcodes = removecolwithna(ws_wearcodes)
