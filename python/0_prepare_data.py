@@ -1,9 +1,9 @@
 from __future__ import print_function
 
 import os
-from UKMovementSensing import prepacc, tud
+from UKMovementSensing import prepacc
 
-from milleniumcohort import create_config
+from milleniumcohort import create_config, tud
 
 
 config = create_config('config.yml')
