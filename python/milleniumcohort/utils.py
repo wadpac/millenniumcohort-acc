@@ -60,7 +60,7 @@ class Config:
 
     @property
     def config_file(self):
-        return os.path.join(self.model_path,  'config.py')
+        return os.path.join(self.model_path,  'config.yml')
 
     @property
     def image_path(self):
