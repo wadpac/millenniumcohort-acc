@@ -1,2 +1,4 @@
 *.pyc
 python/notebooks/.ipynb_checkpoints/
+*.Rproj
+.Rhistory
