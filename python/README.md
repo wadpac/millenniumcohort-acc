@@ -1,5 +1,5 @@
 # Python code for millenium cohort
-This part of the repository contains python scripts and notebooks to run the 
+This part of the repository contains python scripts and notebooks to run the
 [UKMovementSensing](https://github.com/NLeSC/UKMovementSensing/) code on the Millenium Cohort data set.
 It finds states in the accelerometer data with the unsupervised Hidden Semi-Markov Models.
 
@@ -19,14 +19,14 @@ The file `config.yml` defines the directory in which data is stored, as well as 
 * mirrors accelerometer data that seems to be of devices worn upside-down
 * joins accelerometer data with TUD files.
 
-**1_HSMM** This file trains the HSMM on all data in the *merged* folder
+**1_HSMM.py** This file trains the HSMM on all data in the *merged* folder
 
 ## Notebooks
 The notebooks are for analysis of the outcomes of the HSMM model.
 
 **1_HSMM.ipynb** has the same functionality as the script, but shows a few plots.
 
-**2_AnalyseResults.ipynb** shows plots and tables that describe the distribution of the variables and states, 
+**2_AnalyseResults.ipynb** shows plots and tables that describe the distribution of the variables and states,
 as well as a comparison to the reported activities from the diary.
 
 **3_AnalyzeModel.ipynb** shows the distributions learned by the model
