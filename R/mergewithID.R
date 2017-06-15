@@ -45,7 +45,7 @@ ds_wearcodes$filename = as.character(ds_wearcodes$filename)
 ds_wearcodes = merge(ds_wearcodes,heuristic,by.x="filename",by.y="RDFile",all = FALSE)
 # ommit some irrelevant variables
 ds_wearcodes = ds_wearcodes[,-which(colnames(ds_wearcodes) %in% c("id","bodylocation","filename","measurmentday") == TRUE)]
-ds_wearcodes = ds_wearcodes[,-(21:32)]
+ds_wearcodes = ds_wearcodes[,-c(13,21:32)]
 
 # re-order to have accSmall in the front
 ds_wearcodes = moveID2front(ds_wearcodes)
@@ -53,6 +53,14 @@ ds_wearcodes = removecolwithna(ds_wearcodes)
 # remove binFile.y column and rename binFile.x to binFile
 ds_wearcodes = ds_wearcodes[,-21]
 colnames(ds_wearcodes)[which(colnames(ds_wearcodes) == "binFile.x")] = "binFile"
+
+ds_wearcodes$quality_atleast10hours_WearTime = 0
+ds_wearcodes$quality_atleast10hours_WearTime[which(ds_wearcodes$Duration_validdata > 10*60)] = 1
+
+ds_wearcodes$meets_PArecommendation = 0
+ds_wearcodes$meets_PArecommendation[which((ds_wearcodes$MVPAbouts_D10M80perc_E5T100_ENMO +
+                                             ds_wearcodes$MVPAbouts_D1_10M80perc_E5T100_ENMO) > 60)] = 1
+
 write.csv(ds_wearcodes,paste0(path,"/output_RDAfiles/results/mcs_mc_accvars_perday.csv"),row.names = FALSE)
 
 #============================================================================
