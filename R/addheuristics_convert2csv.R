@@ -10,8 +10,17 @@ path = "/media/windows-share/London/data_spring2017"
 setwd(path)
 studyname = "RDAfiles"
 
+inactivity_threshold = 40 # inactivity threshold for metric ENMO in mg units
+moderate_threshold = 120 # moderate activity threshold for metric ENMO in mg units
+
+
+
 #===================================================
 library(GGIR)
+thresholdconfig_name = paste0("_thresholds",inactivity_threshold,"_",moderate_threshold)
+
+inactivity_threshold = inactivity_threshold / 1000 # convert to units of gravity (g)
+moderate_threshold = moderate_threshold / 1000 # convert to units of gravity (g)
 # Define output directories:
 outdir = "accelerometer_5second" # epoch data
 newdir = paste0(path,"/output_",studyname,"/",outdir)
@@ -32,15 +41,20 @@ path2 = paste0("output_",studyname,"/meta/ms2.out")
 fnames = dir(path2)
 fnames2 = unique(unlist(lapply(fnames,rm.RDatafromname)))
 #
-heuristic = c()
+heuristic = c() #initialize object to collect the heuristic variables
 cnt = 1
 print("Load and export epoch data")
+progress_previousstep = 0 # progress of calculations
 for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
+  progress = round((i/length(fnames2))*200)/2
+  if (progress != progress_previousstep) cat(paste0(progress,"% "))
+  progress_previousstep = progress
   fnames2_withday = fnames2
   fnames2_withoutday = unlist(lapply(fnames2,rm.dayfromname))
   file2read = fnames2_withday[which(fnames2_withoutday == ufn2[i])] # maximum 2 days of data per files
   if (length(file2read) > 0) {
     for (j in 1:length(file2read)) { # loop through days available per accelerometer file
+      
       load(paste0(path2,"/",file2read[j],".RData"))
       # Extract time series to indicater which segments are invalid (cannot be trusted)
       invalid = IMP$rout[,5]
@@ -73,11 +87,11 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
         output$acceleration[which(output$heuristic == 1)] = 0
       }
       # Extract inactivity, light and moderate or vigours physical activities
-      OIN = which(output$acceleration < 0.040 & output$heuristic != 1)
+      OIN = which(output$acceleration < inactivity_threshold & output$heuristic != 1)
       if (length(OIN) > 0) output$heuristic[OIN] = 2
-      LIG = which(output$acceleration >= 0.040 & output$acceleration < 0.120 & output$heuristic != 1)
+      LIG = which(output$acceleration >= inactivity_threshold & output$acceleration < moderate_threshold & output$heuristic != 1)
       if (length(LIG) > 0) output$heuristic[LIG] = 3
-      MVPA = which(output$acceleration >= 0.120 & output$heuristic != 1)
+      MVPA = which(output$acceleration >= moderate_threshold & output$heuristic != 1)
       if (length(MVPA) > 0) output$heuristic[MVPA] = 4
       # 10 minute bouts of MVPA
       LN = nrow(output)
@@ -101,6 +115,10 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
                        closedbout=FALSE,bout.metric=4,ws3=5)
       output$heuristic[which(out1$x == 1)] = 7
       day1 = output[1:(1440*12),]
+      na_index = which(is.na(day1[,1])==TRUE)
+      if (length(na_index) > 0) {
+        day1 = day1[-na_index,]
+      }
       write.csv(day1,file=paste0(newdir,"/",file2read[j],".csv"),row.names = FALSE)
       # derive summary to be stored in seperate file at the end:
       Duration_alldata = length(day1$invalid) /12
@@ -119,4 +137,4 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
     }
   }
 }
-write.csv(heuristic,file=paste0(path,"/output_",studyname,"/results/part2_time_in_heuristic_classes.csv"),row.names = FALSE)
+write.csv(heuristic,file=paste0(path,"/output_",studyname,"/results/part2_time_in_heuristic_classes",thresholdconfig_name,".csv"),row.names = FALSE)
