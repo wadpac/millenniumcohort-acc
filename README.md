@@ -46,7 +46,12 @@ write.csv(wc3,paste0(path,"/wc3.csv"),row.names = FALSE)
 
 We run applyGGIR.R with mode =c(1,2) and derive from this day specific reports as well as 10 minute window specific reports
 
-### 1.6 Merging in participant identifiers
+### 1.6 Generate 5 second epoch time series
+
+In preparation for  the Hidden semi-Markov Models we run [R/addheuristics_convert2csv.R](R/addheuristics_convert2csv.R) to generate csv-files with time series of aggregated data. Also this step generates an indicator of heuristic classes of behaviour (e.g. bouts of MVPA).
+
+
+### 1.7 Merging in participant identifiers
 We run mergewithID.R to merging in the participant identifier from the wearcodes.csv file and to tidy up the variable list
 
 
@@ -54,11 +59,7 @@ We run mergewithID.R to merging in the participant identifier from the wearcodes
 Further, we use a Hidden semi-Markov model to explore unsupervised analyses of the data.
 
 
-### 2.1 Generate 5 second epoch time series
-
-To generate the Hidden semi-Markov Models we run [R/addheuristic_convert2csv.R](R/addheuristic_convert2csv.R) to generate csv-files with time series of aggregated data.
-
-### 2.2 Train Hidden semi-Markov Model
+### 2.1 Train Hidden semi-Markov Model
 
 Follow the steps as outlined [here](python/README.md)
 In summary:
@@ -68,4 +69,4 @@ In summary:
 - Adjust the config
 - Run the scripts 0_prepare_data.py and 1_HSMM.py
 
-### 2.3 Check which files did not pass through the pipeline and investigate
+### 2.2 Check which files did not pass through the pipeline and investigate
