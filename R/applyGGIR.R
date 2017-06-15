@@ -70,7 +70,7 @@ g.shell.GGIR(#=======================================
              hrs.del.start = 0, # Only relevant when strategy = 2. How many HOURS need to be ignored at the START of the measurement?
              hrs.del.end = 0, # Only relevant when strategy = 2. How many HOURS need to be ignored at the END of the measurement?
              maxdur = 2, # How many DAYS of measurement do you maximumally expect?
-             includedaycrit = 16, # number of minimum valid hours in a day to attempt physical activity analysis
+             includedaycrit = 0, # number of minimum valid hours in a day to attempt physical activity analysis
              L5M5window = c(0,24), #window over which to calculate L5 and M5
              M5L5res = 10, #resolution in minutes of M5 and L5 calculation
              winhr = 5, # size of M5 and L5 (5 hours by default)
