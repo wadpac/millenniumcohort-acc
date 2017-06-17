@@ -78,8 +78,7 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       sl = which(diff(ch) > 12*5) # ch[index]
       if (length(sl) > 1) {
         for (g in 1:(length(sl)-1)) {
-          output$heuristic[ch[sl[g]]:ch[sl[g]+1]] = 1 #sleep or SIB
-          
+          output$heuristic[ch[sl[g]]:ch[sl[g]+1]] = 1 #sleep or SIB (parameters: 5 minutes and 5 degrees)
         }
         # Acceleration during the sustained inactivity bouts is turned to zero,
         # because we do not trust the accelerometer to sense acceleration during the
@@ -90,30 +89,60 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       OIN = which(output$acceleration < inactivity_threshold & output$heuristic != 1)
       if (length(OIN) > 0) output$heuristic[OIN] = 2
       LIG = which(output$acceleration >= inactivity_threshold & output$acceleration < moderate_threshold & output$heuristic != 1)
-      if (length(LIG) > 0) output$heuristic[LIG] = 3
+      if (length(LIG) > 0) output$heuristic[LIG] = 5
       MVPA = which(output$acceleration >= moderate_threshold & output$heuristic != 1)
-      if (length(MVPA) > 0) output$heuristic[MVPA] = 4
-      # 10 minute bouts of MVPA
+      if (length(MVPA) > 0) output$heuristic[MVPA] = 8
       LN = nrow(output)
-      rr1 = rep(0,LN)
-      rr1[MVPA] = 1
-      out1 = g.getbout(x=rr1,boutduration=10*12,boutcriter=0.8,
-                       closedbout=FALSE,bout.metric=4,ws3=5)
-      output$heuristic[which(out1$x == 1)] = 5
-      # 1 minute bouts of MVPA
-      rr1 = rep(0,LN)
-      p = which(output$heuristic == 4)
-      rr1[p] = 1
-      out1 = g.getbout(x=rr1,boutduration=1*12,boutcriter=0.8,
-                       closedbout=FALSE,bout.metric=4,ws3=5)
-      output$heuristic[which(out1$x == 1)] = 6
       # 30 minute bouts of Inactivity
       rr1 = rep(0,LN)
-      p = which(output$heuristic == 2)
-      rr1[p] = 1
+      p = which(output$heuristic == 2); rr1[p] = 1
       out1 = g.getbout(x=rr1,boutduration=30*12,boutcriter=0.9,
                        closedbout=FALSE,bout.metric=4,ws3=5)
+      output$heuristic[which(out1$x == 1)] = 3
+      # 10 minute bouts of Inactivity
+      rr1 = rep(0,LN)
+      p = which(output$heuristic == 2); rr1[p] = 1
+      out1 = g.getbout(x=rr1,boutduration=10*12,boutcriter=0.9,
+                       closedbout=FALSE,bout.metric=4,ws3=5)
+      output$heuristic[which(out1$x == 1)] = 4
+          
+      # 10 minute bouts of light activity
+      rr1 = rep(0,LN)
+      p = which(output$heuristic == 5); rr1[p] = 1
+      out1 = g.getbout(x=rr1,boutduration=10*12,boutcriter=0.9,
+                       closedbout=FALSE,bout.metric=4,ws3=5)
+      output$heuristic[which(out1$x == 1)] = 6
+      # 1 minute bouts of light activity
+      rr1 = rep(0,LN)
+      p = which(output$heuristic == 5); rr1[p] = 1
+      out1 = g.getbout(x=rr1,boutduration=1*12,boutcriter=0.9,
+                       closedbout=FALSE,bout.metric=4,ws3=5)
       output$heuristic[which(out1$x == 1)] = 7
+      
+      # 10 minute bouts of MVPA
+      
+      rr1 = rep(0,LN)
+      p = which(output$heuristic == 8); rr1[p] = 1
+      out1 = g.getbout(x=rr1,boutduration=10*12,boutcriter=0.8,
+                       closedbout=FALSE,bout.metric=4,ws3=5)
+      output$heuristic[which(out1$x == 1)] = 9
+      # 1 minute bouts of MVPA
+      rr1 = rep(0,LN)
+      p = which(output$heuristic == 8); rr1[p] = 1
+      out1 = g.getbout(x=rr1,boutduration=1*12,boutcriter=0.8,
+                       closedbout=FALSE,bout.metric=4,ws3=5)
+      output$heuristic[which(out1$x == 1)] = 10
+      
+      # NOW replace heuristic 2, 3 and 4, by their total time in these categories
+      OIN = which(output$acceleration < inactivity_threshold & output$heuristic != 1)
+      if (length(OIN) > 0) output$heuristic[OIN] = 2
+      LIG = which(output$acceleration >= inactivity_threshold & output$acceleration < moderate_threshold & output$heuristic != 1)
+      if (length(LIG) > 0) output$heuristic[LIG] = 5
+      MVPA = which(output$acceleration >= moderate_threshold & output$heuristic != 1)
+      if (length(MVPA) > 0) output$heuristic[MVPA] = 8
+      
+      #==========================================================
+      
       day1 = output[1:(1440*12),]
       na_index = which(is.na(day1[,1])==TRUE)
       if (length(na_index) > 0) {
@@ -125,12 +154,15 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       if (length(which(day1$invalid == 1) > 0)) day1 = day1[-which(day1$invalid == 1),]
       heuristic$binFile[cnt] = file2read[j]
       heuristic$sustained_inactivity_min[cnt] = length(which(day1$heuristic == 1)) / 12
-      heuristic$inactivity_min[cnt] = length(which(day1$heuristic == 2)) / 12
-      heuristic$light_activity_min[cnt] = length(which(day1$heuristic == 3)) /12
-      heuristic$allmvpa_min[cnt] = length(which(day1$heuristic == 4)) /12
-      heuristic$MVPAbouts_D10M80perc_E5T100_ENMO[cnt] = length(which(day1$heuristic == 5)) /12
-      heuristic$MVPAbouts_D1_10M80perc_E5T100_ENMO[cnt] = length(which(day1$heuristic == 6)) /12
-      heuristic$Inacitivtybouts_D30M80perc_E5T100_ENMO[cnt] = length(which(day1$heuristic == 7 )) /12
+      heuristic$total_inactivity_min[cnt] = length(which(day1$heuristic == 2)) / 12
+      heuristic$Inacitivtybouts_D30min[cnt] = length(which(day1$heuristic == 3)) /12
+      heuristic$Inacitivtybouts_D10_30min[cnt] = length(which(day1$heuristic == 4)) /12
+      heuristic$total_light_activity_min[cnt] = length(which(day1$heuristic == 5)) /12
+      heuristic$Lightbouts_D10min[cnt] = length(which(day1$heuristic == 6)) /12
+      heuristic$Lightbouts_D1_10min[cnt] = length(which(day1$heuristic == 7)) /12
+      heuristic$total_mvpa_min[cnt] = length(which(day1$heuristic == 8)) /12
+      heuristic$MVPAbouts_D10min[cnt] = length(which(day1$heuristic == 9)) /12
+      heuristic$MVPAbouts_D1_10min[cnt] = length(which(day1$heuristic == 10)) /12
       heuristic$Duration_validdata[cnt] = length(day1$heuristic) /12
       heuristic$Duration_alldata[cnt] = Duration_alldata
       cnt = cnt + 1
