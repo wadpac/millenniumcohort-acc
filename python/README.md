@@ -37,7 +37,9 @@ The file `config.yml` defines the directory in which data is stored, as well as 
 * mirrors accelerometer data that seems to be of devices worn upside-down
 * joins accelerometer data with TUD files.
 
-**1_HSMM.py** This file trains the HSMM on all data in the *merged* folder
+**1_HSMM.py** This script trains the HSMM on all data in the *merged* folder, it ouputs the data with states in the *datawithstates* folder.
+
+**5_apply_model.py** This script is to apply the model to all data in the *merged* folder.
 
 ## Notebooks
 The notebooks are for analysis of the outcomes of the HSMM model.
