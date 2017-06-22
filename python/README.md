@@ -10,7 +10,25 @@ It finds states in the accelerometer data with the unsupervised Hidden Semi-Mark
 * packages from requirements.txt
 
 ## Config file
-The file `config.yml` defines the directory in which data is stored, as well as all parameters for the HSMM models.
+The file `config.yml` defines the directory in which data is stored, as well as all parameters for the HSMM models. The scripts will create subdirectories under the data directory, assuming the following directory structure:
+```
+<data_path>
+├── accelerometer_5second
+│   ├── <output files of R code>
+├── merged
+│   ├── <output files of step 0-Preprocess>
+├── results
+│   ├── mod_<n>st_<b>b_<r>r_<t>t_<colnames>
+│   │   ├── model.pkl
+│   │   ├── config.yml
+│   │   ├── datawithstates
+│   │   │   ├── <output files of step 1-HSMM>
+│   │   └── images
+│   │   │   ├── <output files of notebooks>
+├── subsets
+│   ├── <output files of step 0-Preprocess>
+```
+
 
 ## Scripts
 **0_prepare_data.py**: This script does the following things:
