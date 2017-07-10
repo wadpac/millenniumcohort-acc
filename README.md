@@ -53,7 +53,7 @@ In preparation for  the Hidden semi-Markov Models we run [R/addheuristics_conver
 The heuristic categories are:
 
 1. sustained inactivity or sleep
-2.- non-bouted inactivity
+2. non-bouted inactivity
 3. `>=` 30 minute bouts of inactivity
 4. 10-19 minute bouts of inactivity
 5. non-bouted light activity
