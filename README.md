@@ -55,13 +55,13 @@ The heuristic categories are:
 1. sustained inactivity or sleep
 2. non-bouted inactivity
 3. `>=` 30 minute bouts of inactivity
-4. 10-19 minute bouts of inactivity
+4. 10-29 minute bouts of inactivity
 5. non-bouted light activity
-6. `>=` 10 minunte bouts of light physical activity (LPA)
+6. `>=` 10 minute bouts of light physical activity (LPA)
 7. 1-9 minunte bouts of LPA
 8. non-bouted moderate or vigorous physical activity (MVPA)
-9. `>=` 10 minunte bouts of MVPA
-10. 1-9 minunte bouts of MVPA
+9. `>=` 10 minute bouts of MVPA
+10. 1-9 minute bouts of MVPA
 
 ### 1.7 Merging in participant identifiers
 We run mergewithID.R to merging in the participant identifier from the wearcodes.csv file and to tidy up the variable list
