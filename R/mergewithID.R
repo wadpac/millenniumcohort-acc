@@ -24,19 +24,27 @@ removecolwithna = function(x) {
 }
 #============================================================================
 # Start script:
-path = "/media/windows-share/London/data_spring2017"
-wearcodes = read.csv(paste0(path,"/wearcodes_2017May2.csv")) # load content of wearcodes file
+path = "/media/windows-share/London/data_500"
+wearcodes = read.csv(paste0(path,"/wearcodes.csv")) # load content of wearcodes file
 # remove Day1 and Day 2 because there are duplicates because format is different
 # between different iterations of the preprocessing
 # resulting in duplicates that wear not removed when merging wearcode files
 wearcodes = wearcodes[,-which(colnames(wearcodes) %in% c("Day1","Day2") == TRUE)] 
 wearcodes = unique(wearcodes)
+inactivity_threshold = 40 # inactivity threshold for metric ENMO in mg units
+moderate_threshold = 120 # moderate activity threshold for metric ENMO in mg units
+
+
+
+#===================================================
+thresholdconfig_name = paste0("_thresholds",inactivity_threshold,"_",moderate_threshold)
+
 #============================================================================
 # merge accSmallID from wearcodes file with part2_daysummary file
 # load
-ds = read.csv(paste0(path,"/output_RDAfiles/results/part2_daysummary.csv"))
+ds = read.csv(paste0(path,"/output_data500/results/part2_daysummary.csv"))
 ds$binFile = sapply(as.character(ds$filename),extractbinname)
-heuristic = read.csv(paste0(path,"/output_RDAfiles/results/part2_time_in_heuristic_classes.csv"))
+heuristic = read.csv(paste0(path,"/output_data500/results/part2_time_in_heuristic_classes",thresholdconfig_name,".csv"))
 heuristic$RDFile = paste0(heuristic$binFile,heuristic$day,".RData")
 # merging by binary filename, because this is what connects accelerometer files with accSmallID
 ds_wearcodes = merge(wearcodes,ds,by="binFile")
@@ -61,12 +69,12 @@ ds_wearcodes$meets_PArecommendation = 0
 ds_wearcodes$meets_PArecommendation[which((ds_wearcodes$MVPAbouts_D10M80perc_E5T100_ENMO +
                                              ds_wearcodes$MVPAbouts_D1_10M80perc_E5T100_ENMO) > 60)] = 1
 
-write.csv(ds_wearcodes,paste0(path,"/output_RDAfiles/results/mcs_mc_accvars_perday.csv"),row.names = FALSE)
+write.csv(ds_wearcodes,paste0(path,"/output_data500/results/mcs_mc_accvars_perday.csv"),row.names = FALSE)
 
 #============================================================================
 # merge accSmallID from wearcodes file with part2_windowsummary file (per 10 minutes)
 # load
-ws = read.csv(paste0(path,"/output_RDAfiles/results/part2_windowsummary.csv"))
+ws = read.csv(paste0(path,"/output_data500/results/part2_windowsummary.csv"))
 # only interested in first 40 variables for now (the rest maybe later??)
 ws = ws[,1:40]
 # extract name of binary accelerometer datafile
@@ -79,7 +87,7 @@ ws_wearcodes = ws_wearcodes[,-c(17:23)]
 # re-order to have accSmall in the front
 ws_wearcodes = moveID2front(ws_wearcodes)
 ws_wearcodes = removecolwithna(ws_wearcodes)
-write.csv(ws_wearcodes,paste0(path,"/output_RDAfiles/results/mcs_mc_accvars_per10min.csv"),row.names = FALSE)
+write.csv(ws_wearcodes,paste0(path,"/output_data500/results/mcs_mc_accvars_per10min.csv"),row.names = FALSE)
 
 
 

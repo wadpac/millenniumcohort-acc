@@ -7,12 +7,12 @@ library(GGIR)
 # specify file number to start and end with, fill in c() if unknown
 f0 = c() #file to start with if used in serial analyses
 f1 = c() #file to end with if used in serial analyses (modify accordingly, if infinite then it will process until last file)
-mode= c(1,2)    #What part of the analysis needs to be done (options: 1,2,3,4 and 5)
+mode= c(2)    #What part of the analysis needs to be done (options: 1,2,3,4 and 5)
 dayborder = 4
-studyname = "RDAfiles"  #name of study, only needed if datadir is a list of filenames
-datadir = "/media/windows-share/London/data_spring2017/output_RDAfiles/raw/" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
-outputdir = "/media/windows-share/London/data_spring2017"
-selectdaysfile = "/media/windows-share/London/wearcodes_2017May2.csv"
+studyname = "data500"  #name of study, only needed if datadir is a list of filenames
+datadir = "/media/windows-share/London/data500" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
+outputdir = "/media/windows-share/London/data_500"
+selectdaysfile = "/media/windows-share/London/data_500/wearcodes.csv"
 
 # datadir = "/media/sf_VBox_Shared/London/run_05-10/raw" #Where is the raw accelerometer data? (leave as c() if you work with milestone data and mode > 1
 # outputdir = "/media/sf_VBox_Shared/London/run_05-10/" #Name directory where output needs to be stored
