@@ -5,10 +5,10 @@ graphics.off()
 #==================================================================
 # INPUT NEEDED:
 # path = "/media/sf_VBox_Shared/London/run_05-10/"
-path = "/media/windows-share/London/data_spring2017"
+path = "/media/windows-share/London/data_500"
 
 setwd(path)
-studyname = "RDAfiles"
+studyname = "data500"
 
 inactivity_threshold = 40 # inactivity threshold for metric ENMO in mg units
 moderate_threshold = 120 # moderate activity threshold for metric ENMO in mg units
@@ -88,7 +88,8 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       # Extract inactivity, light and moderate or vigours physical activities
       OIN = which(output$acceleration < inactivity_threshold & output$heuristic != 1)
       if (length(OIN) > 0) output$heuristic[OIN] = 2
-      LIG = which(output$acceleration >= inactivity_threshold & output$acceleration < moderate_threshold & output$heuristic != 1)
+      LIG = which(output$acceleration >= inactivity_threshold &
+                    output$acceleration < moderate_threshold & output$heuristic != 1)
       if (length(LIG) > 0) output$heuristic[LIG] = 5
       MVPA = which(output$acceleration >= moderate_threshold & output$heuristic != 1)
       if (length(MVPA) > 0) output$heuristic[MVPA] = 8
@@ -120,7 +121,6 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
       output$heuristic[which(out1$x == 1)] = 7
       
       # 10 minute bouts of MVPA
-      
       rr1 = rep(0,LN)
       p = which(output$heuristic == 8); rr1[p] = 1
       out1 = g.getbout(x=rr1,boutduration=10*12,boutcriter=0.8,
@@ -133,14 +133,7 @@ for (i in 1:length(fnames2)) { # loop through oroginal accelerometer filenames
                        closedbout=FALSE,bout.metric=4,ws3=5)
       output$heuristic[which(out1$x == 1)] = 10
       
-      # NOW replace heuristic 2, 3 and 4, by their total time in these categories
-      OIN = which(output$acceleration < inactivity_threshold & output$heuristic != 1)
-      if (length(OIN) > 0) output$heuristic[OIN] = 2
-      LIG = which(output$acceleration >= inactivity_threshold & output$acceleration < moderate_threshold & output$heuristic != 1)
-      if (length(LIG) > 0) output$heuristic[LIG] = 5
-      MVPA = which(output$acceleration >= moderate_threshold & output$heuristic != 1)
-      if (length(MVPA) > 0) output$heuristic[MVPA] = 8
-      
+
       #==========================================================
       
       day1 = output[1:(1440*12),]
