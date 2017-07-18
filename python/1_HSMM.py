@@ -1,5 +1,6 @@
 from __future__ import print_function
-
+import matplotlib
+matplotlib.use("ps")
 import os
 from milleniumcohort import create_config
 from UKMovementSensing import hsmm
