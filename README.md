@@ -77,7 +77,7 @@ Follow the steps as outlined [here](python/README.md)
 In summary:
 
 - Make sure you have Python 2.7
-- Install the library [UKMovement Sensing](https://github.com/NLeSC/UKMovementSensing/)
+- Install the library [hsmm4acc](https://github.com/wadpac/hsmm4acc)
 - Adjust the config
 - Run the scripts 0_prepare_data.py and 1_HSMM.py
 
