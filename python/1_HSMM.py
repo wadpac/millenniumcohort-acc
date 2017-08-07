@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use("ps")
 import os
 from milleniumcohort import create_config
-from UKMovementSensing import hsmm
+from hsmm4acc import hsmm
 
 import pandas as pd
 

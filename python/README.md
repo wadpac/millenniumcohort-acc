@@ -1,12 +1,12 @@
 # Python code for millenium cohort
 This part of the repository contains python scripts and notebooks to run the 
-[UKMovementSensing](https://github.com/NLeSC/UKMovementSensing/) code on the Millenium Cohort data set.
+[hsmm4acc](https://github.com/wadpac/hsmm4acc) code on the Millenium Cohort data set.
 It finds states in the accelerometer data with the unsupervised Hidden Semi-Markov Models.
 
 ## Prerequisites
 * Python 2.7
 * For the notebooks: iPython
-* Python package [UKMovementSensing](https://github.com/NLeSC/UKMovementSensing/) (see GitHub page for installation instructions)
+* Python package [hsmm4acc](https://github.com/wadpac/hsmm4acc) (see GitHub page for installation instructions)
 * packages from requirements.txt
 
 ## Config file

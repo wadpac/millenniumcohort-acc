@@ -2,7 +2,7 @@ from __future__ import print_function
 import matplotlib
 matplotlib.use("ps")
 import os
-from UKMovementSensing import prepacc
+from hsmm4acc import prepacc
 
 from milleniumcohort import create_config, tud
 
