@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/89707831.svg)](https://zenodo.org/badge/latestdoi/89707831)
+
 # Pipeline for Millennium cohort accelerometer data
 
 Pipeline for processing data collected with the GENEActiv accelerometer in adolescent members of the Millennium cohort study.
