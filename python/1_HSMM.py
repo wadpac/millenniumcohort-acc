@@ -1,8 +1,9 @@
 from __future__ import print_function
-
+import matplotlib
+matplotlib.use("ps")
 import os
 from milleniumcohort import create_config
-from UKMovementSensing import hsmm
+from hsmm4acc import hsmm
 
 import pandas as pd
 
@@ -41,7 +42,7 @@ if config.hsmmconfig.batch_size == 0:
     # Save the data including the states found. This labeled data serves as an input to the analyses.
     for i, dat in enumerate(datasets):
         dat['state'] = model.stateseqs[i]
-        fn = str(str(dat['subset'][0]) + dat['filename'][0])+'.csv'
+        fn = str(str(dat['subset'][0]) + dat['filename'][0])
         dat.to_csv(os.path.join(config.states_path, fn))
 
 else:

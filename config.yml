@@ -3,7 +3,6 @@ hsmmconfig: !HSMMConfig
   Nmax: 10
   batch_size: 0
   column_names: [acceleration]
-  nr_resamples: 15
+  nr_resamples: 2
   truncate: 720
 data_path: /media/sf_VBox_Shared/London/CLSdata250/
-
